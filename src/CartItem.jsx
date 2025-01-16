@@ -18,7 +18,9 @@ const CartItem = ({ onContinueShopping }) => {
 
     return totalCost;
   };
-
+    const parseItemCostToInteger = (itemCost) => {
+        return parseInt(itemCost.replace('$', ''), 10);
+}
   const handleContinueShopping = (e) => {
     onContinueShopping(e)
   };
