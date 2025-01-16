@@ -18,7 +18,9 @@ const CartItem = ({ onContinueShopping }) => {
 
     return totalCost;
   };
-
+    const parseItemCostToInteger = (itemCost) => {
+        return parseInt(itemCost.replace('$', ''), 10);
+}
   const handleContinueShopping = (e) => {
     onContinueShopping(e)
   };
@@ -31,12 +33,13 @@ const CartItem = ({ onContinueShopping }) => {
   };
 
   const handleDecrement = (item) => {
-    const updatedItem = {...item, quantity: item.quantity - 1 }
+    const updatedItem = {...item, quantity: Math.max(item.quantity - 1, 1) } // Ensure quantity is never negative
     dispatch(updateQuantity(updatedItem))
   };
 
   const handleRemove = (item) => {
-    dispatch(removeItem(item))
+    const updatedItem = {...item, quantity: 0 } // Ensure quantity is never negative
+    dispatch(removeItem(updatedItem))
   };
 
   // Calculate total cost based on quantity for an item
@@ -50,6 +53,7 @@ const CartItem = ({ onContinueShopping }) => {
 
   return (
     <div className="cart-container">
+      <h2 style={{ color: 'black' }}>Plantas Diferentes : {cart.length}</h2>
       <h2 style={{ color: 'black' }}>Total Cart Amount: ${calculateTotalAmount()}</h2>
       <div>
         {cart.map(item => (
